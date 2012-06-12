@@ -1,2 +1,2 @@
 classes/accessConfig.php
-logs/
+logs/*.txt
