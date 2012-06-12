@@ -1,0 +1,3 @@
+#!/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+/usr/bin/php /home/ubuntu/newsconverter/tweetGrabCLI.php > /home/ubuntu/newsconverter/logs/log_`date +%d-%m-%yT%Hh%Mm`.txt 

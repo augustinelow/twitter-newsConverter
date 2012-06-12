@@ -1,4 +1,4 @@
 twitter-newsConverter
 =====================
 
-news converter from tweets, takes only linked tweets
+Follow a couple of users, grab the content and dump it somewhere to be sorted and read; 
