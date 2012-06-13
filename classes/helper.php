@@ -78,9 +78,9 @@ function makeLink($label,$link){
 function insertToContentLinks($tweetTitle,$title,$shortLink,$link,$content){
 	$dbconnect = new DB_Class();
 	$query = "INSERT INTO `newsconverter`.`contentlink` "
-	."(`id`, `tweet_title`, `articleTitle`, `oldLink`, `link`, `category`, `contentBody`, `createon`) "
+	."(`id`, `tweet_title`, `articleTitle`, `oldLink`, `link`, `category`, `contentBody`,`updatedon`, `createon`) "
 	."VALUES "
-	."(NULL, '$tweetTitle','$title','$shortLink','$link', NULL, '$content', now());";	
+	."(NULL, '$tweetTitle','$title','$shortLink','$link', NULL, '$content',now(), now());";	
 	$dbconnect->query($query);
 }
 
