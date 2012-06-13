@@ -43,8 +43,10 @@ foreach($raw_tweets as $obj){
 		$tweet = $curr_tweet->original_tweet;
 		if(isUserBroadcast($curr_tweet->user)&&!isLinkExists($curr_tweet->tweet_expandedurl)){
 			$connection->post('statuses/update', array('status' => $curr_tweet->spin()));			
-			$curr_tweet->insert_to_rawtweets("ITWEET");
 			echo "[TWEETED]:$tweet\n";						
+			$curr_tweet->insert_to_rawtweets("ITWEET");
+			//get it across to contentLinks
+			$curr_tweet->insert_content();
 		}else{
 			$curr_tweet->insert_to_rawtweets("FRESH");
 			echo "[INSERTED]:$tweet\n";						

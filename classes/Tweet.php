@@ -12,12 +12,16 @@ require_once("accessConfig.php");
 
 class Tweet{
 	public $original_tweet;
-	public $tweet_text;
 	public $tweet_expandedurl;
 	public $user;
 	public $tweeted_on;
 	public $has_link;
 	public $tweet_id;
+
+	private $tweet_text;
+	private $article_title;
+	private $short_link;
+	
 	private $dbconnect; 
 	private $bitly;
 	
@@ -32,6 +36,7 @@ class Tweet{
 		$this->user=$user;	
 		$this->tweeted_on=$tweeted_on;
 		$this->has_link=false;
+		$this->article_title="";
 		
 		$parts = getParts($fresh_tweet);
 		
@@ -47,6 +52,7 @@ class Tweet{
 			
 			$tmpParts = explode(' ',$parts[1]);
 			$shortLink = $tmpParts[0];
+			$this->short_link = $shortLink;
 			
 			if(containsTinyUrl($shortLink)){
 				if(isBitLy($shortLink)){
@@ -89,8 +95,32 @@ class Tweet{
 		//Check for "I " do x may have issue 
 		
 		
-		return $this->tweet_text." ".$this->bitly->shortenUrl($this->tweet_expandedurl);
+		return $this->get_title()." ".$this->bitly->shortenUrl($this->tweet_expandedurl);
 	
+	}
+	
+	public function get_title(){
+		if($this->article_title=="") return $this->tweet_text;
+		return $this->article_title;
+	
+	}
+	
+	public function insert_content(){
+		try{
+			$sXML = download_page("http://api.thequeue.org/v1/clear?url=".$this->tweet_expandedurl);
+			$oXML = new SimpleXMLElement($sXML);
+			$content = mysql_escape_string($oXML->channel->item->description);	
+			$titleFromXML = mysql_escape_string($oXML->channel->item->title);
+			$this->article_title = $oXML->channel->item->title;
+			$tweetTitle = mysql_escape_string($this->tweet_text);
+			$link = mysql_escape_string($this->tweet_expandedurl);
+			
+			insertToContentLinks($tweetTitle,$titleFromXML,$this->short_link,$link,$content);
+			updateRawTweetState($this->tweet_id,"ITWEET_INSERTED");
+			echo "[INSERTED_CONTENT]".$this->tweet_text."\n";
+		}catch(Exception $e){
+			echo "[Exception]".$e->getMessage()." on line ".$this->tweet_text."\n";
+		}					
 	}
 	
 	private function stripPrep($text){
