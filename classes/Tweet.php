@@ -100,7 +100,11 @@ class Tweet{
 	}
 	
 	public function get_title(){
-		if($this->article_title=="") return $this->tweet_text;
+		if($this->article_title=="") {
+			$user_str = "@".$this->user;
+			$ret_text = personalStripper($user_str,$this->tweet_text);
+			return $ret_text;
+		}
 		return $this->article_title;
 	
 	}

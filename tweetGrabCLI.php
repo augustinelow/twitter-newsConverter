@@ -1,4 +1,9 @@
 <?php
+/*
+TODO: create a rotary chain to go through different twitter profiles and fire off the tweets from there
+TODO: muffle the I' and my
+
+*/
 require_once('twitteroauth/twitteroauth.php');
 require_once('twitteroauth/config.php');
 require_once("classes/helper.php");
@@ -48,8 +53,9 @@ foreach($raw_tweets as $obj){
 			//get it across to contentLinks
 			$curr_tweet->insert_content();
 		}else{
-			$curr_tweet->insert_to_rawtweets("FRESH");
-			echo "[INSERTED]:$tweet\n";						
+			//$curr_tweet->insert_to_rawtweets("FRESH");
+			//echo "[INSERTED]:$tweet\n";
+			//USED to insert fresh now we ignore, saves space and gives sanity
 		}
 	
 	}

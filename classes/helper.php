@@ -1,6 +1,13 @@
 <?php
 require_once("db_setup.php");
 
+function personalStripper($user_tweet_ID,$tweet){
+	//not what you think :)
+	//check for My/MY,my
+	$my_str = array("my ","My ","MY ");
+	return str_replace($my_str,$user_tweet_ID,$tweet);
+}
+
 function makeLink2($label,$link){
 	//trim link of ?utm
 	$parts = explode('?', $link);
