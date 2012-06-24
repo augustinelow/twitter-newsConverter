@@ -47,9 +47,12 @@ foreach($raw_tweets as $obj){
 	if($curr_tweet->has_link&&!isUserBanned($curr_tweet->user)){
 		$tweet = $curr_tweet->original_tweet;
 		if(isUserBroadcast($curr_tweet->user)&&!isLinkExists($curr_tweet->tweet_expandedurl)){
-			$connection->post('statuses/update', array('status' => $curr_tweet->spin()));			
-			echo "[TWEETED]:$tweet\n";						
+			if(getTweetCount()%13==0){
+				$connection->post('statuses/update', array('status' => $curr_tweet->spin()));			
+				echo "[TWEETED]:$tweet\n";						
+			}
 			$curr_tweet->insert_to_rawtweets("ITWEET");
+			echo "[INSERTED]:$tweet\n";
 			//get it across to contentLinks
 			$curr_tweet->insert_content();
 		}else{
